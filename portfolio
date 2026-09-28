@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>June's Vibe Playground ✏️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts for Hand-drawn / Sketchy Vibe -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Gaegu:wght@400;700&family=Shantell+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Shantell Sans', 'Gaegu', cursive, sans-serif;
+            background-color: #fdfbf7;
+            background-image: radial-gradient(#e5e0d8 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: #1c1917;
+            overflow-x: hidden;
+        }
+
+        .font-hand {
+            font-family: 'Caveat', cursive;
+        }
+
+        .font-mono-code {
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Sketchy Borders & Boxes */
+        .sketch-box {
+            border: 2.5px solid #1c1917;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            box-shadow: 4px 4px 0px #1c1917;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .sketch-box:hover {
+            transform: translate(-2px, -3px) rotate(-0.5deg);
+            box-shadow: 7px 7px 0px #1c1917;
+        }
+
+        .sketch-btn {
+            border: 2px solid #1c1917;
+            border-radius: 200px 12px 185px 15px/12px 195px 15px 200px;
+            box-shadow: 3px 3px 0px #1c1917;
+            transition: all 0.15s ease;
+        }
+
+        .sketch-btn:hover {
+            transform: translate(-1.5px, -2px);
+            box-shadow: 5px 5px 0px #1c1917;
+            background-color: #fef08a;
+        }
+
+        .sketch-btn:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px #1c1917;
+        }
+
+        .sketch-input {
+            border: 2px solid #1c1917;
+            border-radius: 12px 225px 15px 255px/255px 15px 225px 12px;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        .sketch-tag {
+            border: 1.5px solid #1c1917;
+            border-radius: 15px 225px 15px 255px/255px 15px 225px 15px;
+        }
+
+        /* Doodle Highlights */
+        .doodle-underline {
+            background: linear-gradient(120deg, #fef08a 0%, #fef08a 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 35%;
+            background-position: 0 88%;
+        }
+
+        .doodle-underline-pink {
+            background: linear-gradient(120deg, #fbcfe8 0%, #fbcfe8 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 35%;
+            background-position: 0 88%;
+        }
+
+        .doodle-underline-blue {
+            background: linear-gradient(120deg, #bae6fd 0%, #bae6fd 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 35%;
+            background-position: 0 88%;
+        }
+
+        /* Wobbly Keyframes for subtle life */
+        @keyframes subtleWiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-0.5deg); }
+            75% { transform: rotate(0.5deg); }
+        }
+
+        .wiggle-on-hover:hover {
+            animation: subtleWiggle 0.4s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fdfbf7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1c1917;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 sm:p-8 max-w-6xl mx-auto">
+
+    <!-- Header -->
+    <header class="mb-10 pt-4">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b-2 border-dashed border-stone-800">
+            <div>
+                <div class="inline-flex items-center gap-2">
+                    <span class="text-3xl">✏️</span>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight">
+                        June's <span class="doodle-underline">Vibe Playground</span>
+                    </h1>
+                </div>
+                <p class="text-lg sm:text-xl text-stone-600 mt-2 font-hand font-bold">
+                    A handwritten archive of interactive HTML experiments, 3D simulations & vibe coding projects.
+                </p>
+            </div>
+
+            <!-- Header Action Controls -->
+            <div class="flex items-center gap-3 self-end sm:self-center">
+                <button onclick="openExportModal()" class="sketch-btn px-4 py-2 bg-stone-100 text-sm font-semibold flex items-center gap-2" title="Export/Import Posts JSON">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>Export Data</span>
+                </button>
+                <button onclick="openNewPostModal()" class="sketch-btn px-5 py-2.5 bg-yellow-300 text-sm font-bold flex items-center gap-2 wiggle-on-hover">
+                    <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                    <span>New Post</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-grow mb-16">
+        <!-- Filter Tabs -->
+        <div id="filter-bar" class="flex flex-wrap items-center gap-2 sm:gap-3 mb-8">
+            <!-- Dynamic Category Filter Buttons injected here -->
+        </div>
+
+        <!-- Project Cards Container -->
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Dynamic Post Cards injected here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-20 sketch-box bg-white p-8">
+            <div class="text-5xl mb-4">🎨</div>
+            <h3 class="text-2xl font-bold mb-2">No vibe projects found!</h3>
+            <p class="text-stone-600 mb-6 font-hand text-xl">Click the "New Post" button above to paste and embed your HTML code.</p>
+            <button onclick="openNewPostModal()" class="sketch-btn px-6 py-3 bg-yellow-300 font-bold inline-flex items-center gap-2">
+                <i data-lucide="plus" class="w-5 h-5"></i> Create First Post
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal 1: New HTML Post Creator -->
+    <div id="post-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm">
+        <div class="sketch-box bg-white w-full max-w-3xl max-h-[90vh] flex flex-col p-6 sm:p-8 relative overflow-hidden">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b-2 border-stone-800">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">📝</span>
+                    <h2 id="modal-heading" class="text-2xl font-bold">New HTML Vibe Post</h2>
+                </div>
+                <button onclick="closeNewPostModal()" class="p-1 hover:bg-stone-100 rounded-full border border-stone-800">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <form id="post-form" class="flex-grow flex flex-col gap-4 overflow-y-auto pr-1">
+                <input type="hidden" id="post-id">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Project Title *</label>
+                        <input type="text" id="post-title" required placeholder="e.g. 3D Trolley Problem" class="sketch-input w-full px-3 py-2 text-sm bg-stone-50 focus:outline-none focus:bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Category / Tag *</label>
+                        <input type="text" id="post-category" required placeholder="e.g. 3D, Ethics, Game" class="sketch-input w-full px-3 py-2 text-sm bg-stone-50 focus:outline-none focus:bg-white">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-1">Short Tagline / Description *</label>
+                    <input type="text" id="post-description" required placeholder="A brief doodle thoughts on this code..." class="sketch-input w-full px-3 py-2 text-sm bg-stone-50 focus:outline-none focus:bg-white">
+                </div>
+
+                <div class="flex-grow flex flex-col min-h-[220px]">
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-sm font-bold">Paste HTML / JS Code Here *</label>
+                        <span class="text-xs text-stone-500 font-mono-code">&lt;html&gt; embedded</span>
+                    </div>
+                    <textarea id="post-code" required placeholder="<!DOCTYPE html>&#10;<html>&#10;  <body>&#10;    <h1>Hello World</h1>&#10;  </body>&#10;</html>" class="sketch-input w-full flex-grow p-3 text-xs font-mono-code bg-stone-900 text-emerald-400 focus:outline-none resize-none rounded-xl"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t-2 border-stone-800">
+                    <button type="button" onclick="closeNewPostModal()" class="sketch-btn px-4 py-2 bg-stone-100 font-bold text-sm">Cancel</button>
+                    <button type="submit" class="sketch-btn px-6 py-2 bg-emerald-300 font-bold text-sm flex items-center gap-2">
+                        <i data-lucide="check" class="w-4 h-4"></i> Save & Publish Post
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Interactive Runner / Viewer (Iframe Sandbox) -->
+    <div id="runner-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-stone-900/80 backdrop-blur-md">
+        <div class="sketch-box bg-white w-full max-w-5xl h-[90vh] flex flex-col relative overflow-hidden">
+            <!-- Header bar -->
+            <div class="flex justify-between items-center px-6 py-3 bg-stone-100 border-b-2 border-stone-800">
+                <div class="flex items-center gap-3">
+                    <span id="runner-icon" class="text-xl">🚀</span>
+                    <div>
+                        <h3 id="runner-title" class="font-bold text-lg leading-none">Running Vibe Project</h3>
+                        <span id="runner-tag" class="text-xs font-mono-code text-stone-500"></span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="reloadRunnerIframe()" class="sketch-btn p-2 bg-white text-xs font-bold flex items-center gap-1" title="Reload Canvas">
+                        <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="closeRunnerModal()" class="sketch-btn p-2 bg-rose-200 text-xs font-bold" title="Close Runner">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Iframe Sandbox Canvas -->
+            <div class="flex-grow bg-white relative">
+                <iframe id="runner-iframe" class="w-full h-full border-none" sandbox="allow-scripts allow-same-origin allow-modals"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Data Export / Import JSON -->
+    <div id="export-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm">
+        <div class="sketch-box bg-white w-full max-w-lg p-6 sm:p-8">
+            <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-stone-800">
+                <h3 class="text-2xl font-bold flex items-center gap-2">
+                    <span>📦</span> Portfolio Backup
+                </h3>
+                <button onclick="closeExportModal()" class="p-1 hover:bg-stone-100 rounded-full border border-stone-800">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <p class="text-sm text-stone-600 mb-3">Copy your JSON data to back up all your posts, or paste JSON below to restore posts.</p>
+
+            <textarea id="export-json-area" class="sketch-input w-full h-44 p-3 text-xs font-mono-code bg-stone-50 focus:outline-none resize-none mb-4"></textarea>
+
+            <div class="flex justify-between items-center gap-2">
+                <button onclick="copyExportJSON()" class="sketch-btn px-4 py-2 bg-yellow-200 text-xs font-bold flex items-center gap-1">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Data
+                </button>
+                <button onclick="importJSONData()" class="sketch-btn px-4 py-2 bg-sky-200 text-xs font-bold flex items-center gap-1">
+                    <i data-lucide="upload" class="w-3.5 h-3.5"></i> Import JSON
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="pt-8 border-t-2 border-dashed border-stone-800 text-center text-stone-600 font-hand text-lg flex flex-col sm:flex-row justify-between items-center gap-2">
+        <p>Built with ❤️ for June's Vibe Coding Experiments</p>
+        <p class="text-xs font-mono text-stone-500">Local Storage Active • Single File HTML Portfolio</p>
+    </footer>
+
+    <script>
+        /* --------------------------------------------------
+         * DEFAULT SAMPLE POSTS
+         * -------------------------------------------------- */
+        const DEFAULT_POSTS = [
+            {
+                id: 'post-1',
+                title: '3D Trolley Problem Simulation',
+                category: '3D Ethics',
+                description: 'A 3D perspective moral thought experiment built using Three.js with simple geometric shapes, custom tracks, lever mechanics, and consequentialist ending summaries.',
+                date: 'Sep 28, 2026',
+                color: 'bg-yellow-100',
+                code: `<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.tailwindcss.com"><\/script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>
+</head>
+<body class="bg-stone-900 text-white flex flex-col items-center justify-center h-screen overflow-hidden font-mono">
+  <div class="absolute top-4 text-center z-10 bg-black/60 p-4 rounded-xl border border-stone-700">
+    <h1 class="text-xl font-bold text-yellow-300">3D Trolley Dilemma (Mini Sandbox)</h1>
+    <p class="text-xs text-stone-300 mt-1">Press <span class="bg-yellow-400 text-black px-2 py-0.5 rounded font-bold">E</span> to switch the track</p>
+    <p id="status" class="text-sm mt-2 text-emerald-400">Track: STRAIGHT (5 people in danger)</p>
+  </div>
+  <div id="canvas-container" class="w-full h-full"></div>
+  <script>
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x18181b);
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+    camera.position.set(-15, 12, 20);
+    camera.lookAt(5, 0, 0);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(-10, 20, 10);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+
+    // Ground
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshStandardMaterial({color: 0x27272a}));
+    ground.rotation.x = -Math.PI / 2;
+    scene.add(ground);
+
+    // Trolley Mesh
+    const trolley = new THREE.Mesh(new THREE.BoxGeometry(3, 1.8, 1.6), new THREE.MeshStandardMaterial({color: 0xeab308}));
+    trolley.position.set(-18, 1, 0);
+    scene.add(trolley);
+
+    let isSwitched = false;
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'e' || e.key === 'E') {
+        isSwitched = !isSwitched;
+        document.getElementById('status').textContent = isSwitched ? "Track: DIVERTED (1 person targeted)" : "Track: STRAIGHT (5 people in danger)";
+      }
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (trolley.position.x < 18) {
+        trolley.position.x += 0.08;
+        if (trolley.position.x > 0 && isSwitched) {
+          trolley.position.z = Math.min(4, trolley.position.z + 0.04);
+        }
+      } else {
+        trolley.position.x = -18;
+        trolley.position.z = 0;
+      }
+      renderer.render(scene, camera);
+    }
+    animate();
+  <\/script>
+</body>
+</html>`
+            },
+            {
+                id: 'post-2',
+                title: 'Doodle Kinetic Physics Balls',
+                category: 'Physics',
+                description: 'Interactive HTML5 canvas doodle particles with bouncing kinetic collisions, force vectors, and gravity toggles.',
+                date: 'Sep 25, 2026',
+                color: 'bg-sky-100',
+                code: `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { margin: 0; background: #fafaf9; overflow: hidden; font-family: sans-serif; }
+    canvas { display: block; }
+    .hint { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); font-weight: bold; color: #444; }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <div class="hint">Click anywhere to spawn kinetic doodle balls! 🎈</div>
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const balls = [];
+    class Ball {
+      constructor(x, y) {
+        this.x = x; this.y = y;
+        this.r = Math.random() * 20 + 15;
+        this.vx = (Math.random() - 0.5) * 8;
+        this.vy = (Math.random() - 0.5) * 8;
+        this.color = ['#fef08a', '#bae6fd', '#fbcfe8', '#cbd5e1'][Math.floor(Math.random()*4)];
+      }
+      update() {
+        this.vy += 0.2; // gravity
+        this.x += this.vx; this.y += this.vy;
+        if (this.x - this.r < 0 || this.x + this.r > canvas.width) this.vx *= -0.8;
+        if (this.y + this.r > canvas.height) { this.y = canvas.height - this.r; this.vy *= -0.7; }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+        ctx.fillStyle = this.color; ctx.fill();
+        ctx.lineWidth = 3; ctx.strokeStyle = '#1c1917'; ctx.stroke();
+      }
+    }
+
+    for(let i=0; i<12; i++) balls.push(new Ball(window.innerWidth/2, 100));
+
+    window.addEventListener('click', (e) => balls.push(new Ball(e.clientX, e.clientY)));
+
+    function loop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      balls.forEach(b => { b.update(); b.draw(); });
+      requestAnimationFrame(loop);
+    }
+    loop();
+  <\/script>
+</body>
+</html>`
+            }
+        ];
+
+        /* --------------------------------------------------
+         * STATE MANAGEMENT
+         * -------------------------------------------------- */
+        let posts = JSON.parse(localStorage.getItem('june_vibe_doodle_posts')) || DEFAULT_POSTS;
+        let selectedCategory = 'All';
+
+        const colorPalettes = ['bg-yellow-100', 'bg-sky-100', 'bg-pink-100', 'bg-emerald-100', 'bg-purple-100', 'bg-orange-100'];
+
+        /* --------------------------------------------------
+         * RENDER FUNCTIONS
+         * -------------------------------------------------- */
+        function getCategories() {
+            const categories = new Set(['All']);
+            posts.forEach(p => categories.add(p.category));
+            return Array.from(categories);
+        }
+
+        function renderFilterBar() {
+            const bar = document.getElementById('filter-bar');
+            const categories = getCategories();
+
+            bar.innerHTML = categories.map(cat => {
+                const isActive = cat === selectedCategory;
+                return `
+                    <button onclick="setCategory('${cat}')" class="sketch-btn px-3.5 py-1.5 text-xs sm:text-sm font-bold transition-all ${
+                        isActive ? 'bg-stone-900 text-white scale-105' : 'bg-white text-stone-800'
+                    }">
+                        ${cat === 'All' ? '✨ All Posts' : '#' + cat}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function setCategory(cat) {
+            selectedCategory = cat;
+            renderFilterBar();
+            renderPosts();
+        }
+
+        function renderPosts() {
+            const grid = document.getElementById('projects-grid');
+            const emptyState = document.getElementById('empty-state');
+
+            const filtered = selectedCategory === 'All' 
+                ? posts 
+                : posts.filter(p => p.category === selectedCategory);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            grid.innerHTML = filtered.map((post, idx) => {
+                const colorClass = post.color || colorPalettes[idx % colorPalettes.length];
+                return `
+                    <div class="sketch-box ${colorClass} p-6 sm:p-7 flex flex-col justify-between relative group">
+                        <div>
+                            <!-- Card Header -->
+                            <div class="flex justify-between items-start mb-3 gap-2">
+                                <span class="sketch-tag px-3 py-1 bg-white text-xs font-bold font-mono-code text-stone-900">
+                                    #${post.category}
+                                </span>
+                                <span class="text-xs font-hand font-bold text-stone-600">
+                                    ${post.date || 'Recent'}
+                                </span>
+                            </div>
+
+                            <!-- Title -->
+                            <h3 class="text-2xl font-bold tracking-tight mb-2 text-stone-900 leading-snug">
+                                ${post.title}
+                            </h3>
+
+                            <!-- Description -->
+                            <p class="text-sm text-stone-700 font-hand font-bold leading-relaxed mb-6">
+                                ${post.description}
+                            </p>
+                        </div>
+
+                        <!-- Card Action Buttons -->
+                        <div class="pt-4 border-t-2 border-stone-800/20 flex items-center justify-between gap-2">
+                            <button onclick="runPost('${post.id}')" class="sketch-btn px-5 py-2.5 bg-white text-stone-900 font-extrabold text-sm flex items-center gap-2 group-hover:bg-stone-900 group-hover:text-white transition-all">
+                                <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                                <span>Run Code</span>
+                            </button>
+
+                            <div class="flex items-center gap-1">
+                                <button onclick="editPost('${post.id}')" class="sketch-btn p-2 bg-white text-stone-700 hover:bg-stone-100" title="Edit Post">
+                                    <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="deletePost('${post.id}')" class="sketch-btn p-2 bg-rose-100 text-rose-800 hover:bg-rose-200" title="Delete Post">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        /* --------------------------------------------------
+         * MODAL ACTIONS & LOGIC
+         * -------------------------------------------------- */
+        const postModal = document.getElementById('post-modal');
+        const runnerModal = document.getElementById('runner-modal');
+        const exportModal = document.getElementById('export-modal');
+
+        function openNewPostModal() {
+            document.getElementById('modal-heading').textContent = "New HTML Vibe Post";
+            document.getElementById('post-form').reset();
+            document.getElementById('post-id').value = '';
+            postModal.classList.remove('hidden');
+        }
+
+        function closeNewPostModal() {
+            postModal.classList.add('hidden');
+        }
+
+        // Save / Edit Post Handler
+        document.getElementById('post-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('post-id').value || 'post-' + Date.now();
+            const title = document.getElementById('post-title').value;
+            const category = document.getElementById('post-category').value;
+            const description = document.getElementById('post-description').value;
+            const code = document.getElementById('post-code').value;
+
+            const existingIndex = posts.findIndex(p => p.id === id);
+
+            const postObj = {
+                id,
+                title,
+                category,
+                description,
+                code,
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                color: colorPalettes[Math.floor(Math.random() * colorPalettes.length)]
+            };
+
+            if (existingIndex >= 0) {
+                posts[existingIndex] = { ...posts[existingIndex], ...postObj };
+            } else {
+                posts.unshift(postObj);
+            }
+
+            saveToLocalStorage();
+            closeNewPostModal();
+            renderFilterBar();
+            renderPosts();
+        });
+
+        function editPost(id) {
+            const post = posts.find(p => p.id === id);
+            if (!post) return;
+
+            document.getElementById('modal-heading').textContent = "Edit Vibe Post";
+            document.getElementById('post-id').value = post.id;
+            document.getElementById('post-title').value = post.title;
+            document.getElementById('post-category').value = post.category;
+            document.getElementById('post-description').value = post.description;
+            document.getElementById('post-code').value = post.code;
+
+            postModal.classList.remove('hidden');
+        }
+
+        function deletePost(id) {
+            if (confirm("Are you sure you want to erase this doodle post?")) {
+                posts = posts.filter(p => p.id !== id);
+                saveToLocalStorage();
+                renderFilterBar();
+                renderPosts();
+            }
+        }
+
+        /* --------------------------------------------------
+         * RUNNER / IFRAME SANDBOX LOGIC
+         * -------------------------------------------------- */
+        let activeRunnerCode = '';
+
+        function runPost(id) {
+            const post = posts.find(p => p.id === id);
+            if (!post) return;
+
+            document.getElementById('runner-title').textContent = post.title;
+            document.getElementById('runner-tag').textContent = '#' + post.category;
+            activeRunnerCode = post.code;
+
+            const iframe = document.getElementById('runner-iframe');
+            iframe.srcdoc = activeRunnerCode;
+
+            runnerModal.classList.remove('hidden');
+        }
+
+        function reloadRunnerIframe() {
+            const iframe = document.getElementById('runner-iframe');
+            iframe.srcdoc = '';
+            setTimeout(() => {
+                iframe.srcdoc = activeRunnerCode;
+            }, 100);
+        }
+
+        function closeRunnerModal() {
+            runnerModal.classList.add('hidden');
+            document.getElementById('runner-iframe').srcdoc = '';
+        }
+
+        /* --------------------------------------------------
+         * EXPORT / IMPORT LOGIC
+         * -------------------------------------------------- */
+        function openExportModal() {
+            const jsonArea = document.getElementById('export-json-area');
+            jsonArea.value = JSON.stringify(posts, null, 2);
+            exportModal.classList.remove('hidden');
+        }
+
+        function closeExportModal() {
+            exportModal.classList.add('hidden');
+        }
+
+        function copyExportJSON() {
+            const jsonArea = document.getElementById('export-json-area');
+            jsonArea.select();
+            document.execCommand('copy');
+            alert('Copied portfolio data to clipboard! 📋');
+        }
+
+        function importJSONData() {
+            const jsonArea = document.getElementById('export-json-area');
+            try {
+                const parsed = JSON.parse(jsonArea.value);
+                if (Array.isArray(parsed)) {
+                    posts = parsed;
+                    saveToLocalStorage();
+                    renderFilterBar();
+                    renderPosts();
+                    closeExportModal();
+                    alert('Successfully imported portfolio posts! 🎉');
+                } else {
+                    alert('Invalid JSON format. Must be an array of project posts.');
+                }
+            } catch (err) {
+                alert('JSON Syntax Error: Please check your code input.');
+            }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('june_vibe_doodle_posts', JSON.stringify(posts));
+        }
+
+        /* --------------------------------------------------
+         * INITIALIZATION
+         * -------------------------------------------------- */
+        window.onload = function() {
+            lucide.createIcons();
+            renderFilterBar();
+            renderPosts();
+        };
+    </script>
+</body>
+</html>
